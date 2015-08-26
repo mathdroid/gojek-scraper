@@ -16,7 +16,7 @@ var baseId = 538589523
 var baseUrl = 'http://api.gojek.co.id/gojek/customer/referral'
 var options = {}
 
-for (baseId=544698150; baseId<544698350; baseId++) {
+for (baseId=544728650; baseId<544728900; baseId++) {
 
   // Configure the request
   options = {
@@ -24,7 +24,7 @@ for (baseId=544698150; baseId<544698350; baseId++) {
       method: 'POST',
       headers: headers,
       body: JSON.stringify({
-        referralId: 542832278,
+        referralId: 544469336,
         referrerId: baseId+1
       })
   }
