@@ -55,8 +55,8 @@ function lookup(decimator, cb) {
       numberBase += decimator;
       return lookup(decimator, cb);
     } else {
-      console.log('last index is: ' + index + '.');
-      cb();
+      // console.log('last index is: ' + index + '.');
+      cb(index);
       return index;
     }
   });
@@ -66,37 +66,49 @@ function findUser(cb) {
   console.log('looking for users.');
   numberBase = userSetup.numberBase;
   baseUrl = userSetup.baseUrl;
-  return lookup(100000, function () {cb();});
+  return lookup(100000, function (idx) {cb(idx);});
 }
 function findDriver(cb) {
   console.log('looking for drivers.');
   numberBase = driverSetup.numberBase;
   baseUrl = driverSetup.baseUrl;
-  return lookup(100000, function () {cb();});
+  return lookup(100000, function (idx) {cb(idx);});
 }
 function findBooking(cb) {
   console.log('looking for bookings.');
   numberBase = bookingSetup.numberBase;
   baseUrl = bookingSetup.baseUrl;
-  return lookup(100000, function () {cb();});
+  return lookup(100000, function (idx) {cb(idx);});
 }
 program.version('o.1.0');
 
 program
   .command('user')
   .description('find the last user in Go-Jek database.')
-  .action(findUser);
+  .action(function () {
+    findUser(function (index) {
+      console.log('last user index is: ' + index + '.');
+    });
+  });
 
 program
   .command('driver')
   .description('find the last driver in Go-Jek database.')
-  .action(findDriver);
+  .action(function () {
+    findDriver(function (index) {
+      console.log('last driver index is: ' + index + '.');
+    });
+  });
 
 
 program
   .command('booking')
   .description('find the last booking in Go-Jek database.')
-  .action(findBooking);
+  .action(function () {
+    findBooking(function (index) {
+      console.log('last booking index is: ' + index + '.');
+    });
+  });
 
 program
   .command('all')
@@ -104,13 +116,22 @@ program
   .action(function(){
     async.series([
         function(callback){
-          findUser(function () {callback(null)});
+          findUser(function (index) {
+            console.log('last user index is: ' + index + '.');
+            callback(null);
+          });
         },
         function(callback){
-          findDriver(function () {callback(null)});
+          findDriver(function (index) {
+            console.log('last driver index is: ' + index + '.');
+            callback(null);
+          });
         },
         function(callback){
-          findBooking(function () {callback(null)});
+          findBooking(function (index) {
+            console.log('last booking index is: ' + index + '.');
+            callback(null);
+          });
         }
     ]);
   });
