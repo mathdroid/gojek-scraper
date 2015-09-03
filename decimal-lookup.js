@@ -56,8 +56,8 @@ function lookup(decimator, cb) {
       return lookup(decimator, cb);
     } else {
       // console.log('last index is: ' + index + '.');
-      cb(index);
-      return index;
+      // cb(index);
+      return cb(index);
     }
   });
 }
