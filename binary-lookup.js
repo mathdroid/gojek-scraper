@@ -60,28 +60,34 @@ function lookup(decimator, cb) {
   });
 }
 
-function findUser(cb) {
-  console.log('looking for users.');
+var findUser = function (cb) {
+  console.log('looking for the latest user.');
   numberBase = userSetup.numberBase;
   baseUrl = userSetup.baseUrl;
   return lookup(1048576, function (idx) {cb(idx);});
 }
 
-function findDriver(cb) {
-  console.log('looking for drivers.');
+var findDriver = function (cb) {
+  console.log('looking for the latest driver.');
   numberBase = driverSetup.numberBase;
   baseUrl = driverSetup.baseUrl;
   return lookup(1048576, function (idx) {cb(idx);});
 }
 
-function findBooking(cb) {
-  console.log('looking for bookings.');
+var findBooking = function (cb) {
+  console.log('looking for the latest booking.');
   numberBase = bookingSetup.numberBase;
   baseUrl = bookingSetup.baseUrl;
   return lookup(1048576, function (idx) {cb(idx);});
 }
 
-program.version('o.1.0');
+exports.findUser = findUser;
+exports.findDriver = findDriver;
+exports.findBooking = findBooking;
+
+program
+  .version('0.2.0')
+  .option('-t --target', 'add target');
 
 program
   .command('user')

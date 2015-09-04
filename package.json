@@ -12,6 +12,7 @@
     "async": "^1.4.2",
     "commander": "^2.8.1",
     "fuse.js": "^1.2.2",
+    "minimist": "^1.2.0",
     "request": "^2.60.0"
   },
   "devDependencies": {}

@@ -1,5 +1,11 @@
+#!/usr/bin/env node
+
 var request = require('request');
 var qs = require('querystring');
+var argv = require('minimist')(process.argv.slice(2));
+var async = require('async');
+
+var lookup = require('./binary-lookup');
 
 var headers = {
     'Content-Type': 'application/json',
@@ -7,48 +13,94 @@ var headers = {
 }
 
 var count = 0;
-var userlist = [];
+var countMax = 50;
+var latestUser;
 
-var baseId = 0
+if (argv.c) {
+  countMax = argv.c
+}
+
+var userlist = [];
 var baseUrl = 'http://api.gojek.co.id/gojek/customer/referral'
 var options = {}
 
-for (baseId=545156900; baseId<545157300; baseId++) {
+var refID, baseId;
 
-  options = {
-      url: baseUrl,
-      method: 'POST',
-      headers: headers,
-      body: JSON.stringify({
-        referralId: 543769084,
-        referrerId: baseId+1
-      })
-  }
-  // Start the request
-  request(options, function (error, response, body) {
-      // if (!error) {
-          // Print out the response body
-          // console.log(error)
-          // console.log(response)
-          // console.log(body)
-          if (body && error!=504) {
-            try {
-              msg = JSON.parse(body);
-            } catch(err) {
-                console.log("Error. message is %s", err);
+if (!argv.t || typeof argv.t != 'number') {
+  console.log('No target specified. (./scrape.js -t <target>)');
+} else {
+  async.series([
+    function(callback) {
+      refID = argv.t;
+      console.log('referring user number ' + refID);
+      console.log('referring ' + countMax + ' number of users.');
+      lookup.findUser(function (index) {
+
+        baseId = index;
+        console.log('latest  user found. id: ' + baseId);
+        callback(null, baseId);
+      });
+    },
+    function (callback) {
+      console.log('start of referral.')
+
+      async.whilst(
+        function () { return (count < countMax); },
+        function (next) {
+          async.series([
+            function(cb){
+              options = {
+                url: baseUrl,
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify({
+                  referralId: refID,
+                  referrerId: baseId
+                })
+              }
+              console.log(options);
+              cb(null);
+            },
+            function(cb){
+              request(options, function (error, response, body) {
+                // console.log(error)
+                // console.log(response)
+                console.log(body)
+                if (body && error!=504) {
+                  msg = 'no message available.';
+                  try {
+                    msg = JSON.parse(body);
+                  } catch(err) {
+                      // console.log("Error. message is %s", err);
+                  }
+                  // console.log(msg);
+                  if (msg.creditTopupped >0) {
+                    // console.log("added user number " + msg.customerId)
+                    // count++;
+                    userlist.push(msg.customerId);
+                    count++;
+                    // console.log(userlist)
+                    // console.log(userlist.length)
+                  }
+                }
+                cb(null);
+              });
             }
-            // console.log(msg);
+          ],
+          function (err, results) {
+          baseId--;
+          next(null);
+          });
+        },
+        function (err) {
+          console.log('referred ' + count + ' number of users.');
+          console.log('user list: ' + userlist);
+        }
+      );
 
-            if (msg.creditTopupped >0) {
-              console.log("added user number " + msg.customerId)
-              count++;
-              userlist.push(msg.customerId);
-              console.log(userlist)
-              console.log(userlist.length)
-            }
-          }
+
+    }
+  ]);
 
 
-      // }
-  })
 }
