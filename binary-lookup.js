@@ -48,8 +48,8 @@ function lookup(decimator, cb) {
       }
   ],
   function (err, results) {
-    if (result==='' && decimator >= 10) {
-      return lookup(decimator/10, cb);
+    if (result==='' && decimator >= 2) {
+      return lookup(decimator/2, cb);
     } else if (result!=='') {
       numberBase += decimator;
       return lookup(decimator, cb);
@@ -64,21 +64,21 @@ function findUser(cb) {
   console.log('looking for users.');
   numberBase = userSetup.numberBase;
   baseUrl = userSetup.baseUrl;
-  return lookup(100000, function (idx) {cb(idx);});
+  return lookup(1048576, function (idx) {cb(idx);});
 }
 
 function findDriver(cb) {
   console.log('looking for drivers.');
   numberBase = driverSetup.numberBase;
   baseUrl = driverSetup.baseUrl;
-  return lookup(100000, function (idx) {cb(idx);});
+  return lookup(1048576, function (idx) {cb(idx);});
 }
 
 function findBooking(cb) {
   console.log('looking for bookings.');
   numberBase = bookingSetup.numberBase;
   baseUrl = bookingSetup.baseUrl;
-  return lookup(100000, function (idx) {cb(idx);});
+  return lookup(1048576, function (idx) {cb(idx);});
 }
 
 program.version('o.1.0');
