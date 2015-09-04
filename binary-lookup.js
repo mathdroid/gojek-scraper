@@ -81,10 +81,6 @@ var findBooking = function (cb) {
   return lookup(1048576, function (idx) {cb(idx);});
 }
 
-exports.findUser = findUser;
-exports.findDriver = findDriver;
-exports.findBooking = findBooking;
-
 program
   .version('0.2.0')
   .option('-t --target', 'add target');
@@ -147,3 +143,8 @@ program.parse(process.argv);
 if (!process.argv.slice(2).length) {
   program.outputHelp();
 }
+
+
+exports.findUser = findUser;
+exports.findDriver = findDriver;
+exports.findBooking = findBooking;

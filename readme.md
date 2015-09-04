@@ -8,7 +8,7 @@
 
   - `./binary-lookup.js`: lookup the latest index in the database. Available commands: `user`, `driver`, `booking`, `all`.
 
-  - `./binary-lookup.js`: lookup the latest index in the database, *not* using binary search. Available commands: `user`, `driver`, `booking`, `all`.
+  - `./decimal-lookup.js`: lookup the latest index in the database, *not* using binary search. Available commands: `user`, `driver`, `booking`, `all`.
 
   - `./scrape.js`: refer a number of users with a specified `target` user ID. Available options: `-t <target, REQUIRED>`, `-c <count, default=50>`.
 

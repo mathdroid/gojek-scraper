@@ -58,14 +58,14 @@ if (!argv.t || typeof argv.t != 'number') {
                   referrerId: baseId
                 })
               }
-              console.log(options);
+              // console.log(options);
               cb(null);
             },
             function(cb){
               request(options, function (error, response, body) {
                 // console.log(error)
                 // console.log(response)
-                console.log(body)
+                // console.log(body)
                 if (body && error!=504) {
                   msg = 'no message available.';
                   try {
@@ -93,6 +93,7 @@ if (!argv.t || typeof argv.t != 'number') {
           });
         },
         function (err) {
+          console.log('end of referral.');
           console.log('referred ' + count + ' number of users.');
           console.log('user list: ' + userlist);
         }
